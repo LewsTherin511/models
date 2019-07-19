@@ -48,9 +48,6 @@ PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
 
 NUM_CLASSES = 90
 
-print("Printing some really useless random stuff here \n\n!")
-
-
 
 # Download Model and extract
 if not os.path.exists(MODEL_NAME + '/frozen_inference_graph.pb'):
