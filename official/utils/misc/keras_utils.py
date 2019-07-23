@@ -22,6 +22,7 @@ import time
 
 import tensorflow as tf
 from tensorflow.core.protobuf import rewriter_config_pb2
+from tensorflow.python import tf2
 from tensorflow.python.eager import profiler
 
 
@@ -202,7 +203,7 @@ def set_config_v2(enable_xla=False,
         {'layout_optimizer': False}
     )
 
+
 def is_v2_0():
   """Returns true if using tf 2.0."""
-  from tensorflow.python import tf2
   return tf2.enabled()
