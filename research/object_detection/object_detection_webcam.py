@@ -10,7 +10,6 @@ import tarfile
 import tensorflow as tf
 import zipfile
 import cv2
-
 from collections import defaultdict
 from io import StringIO
 from matplotlib import pyplot as plt
@@ -20,6 +19,7 @@ from PIL import Image
 sys.path.append("..")
 from utils import ops as utils_ops
 
+# imports from the object detection module.
 from utils import label_map_util
 from utils import visualization_utils as vis_util
 
@@ -119,6 +119,10 @@ with detection_graph.as_default():
 															   np.squeeze(scores),
 															   category_index, use_normalized_coordinates=True,
 															   line_thickness=8)
+
+
+
+
 			cv2.imshow('image' ,cv2.resize(image_np ,(1280 ,960)))
 
 
