@@ -25,9 +25,9 @@ from utils import visualization_utils as vis_util
 
 
 
-#############################
-###   Model preparation   ###
-#############################
+#---------------------------#
+#     Model preparation     #
+#---------------------------#
 # Any model exported using the `export_inference_graph.py` tool can be loaded here simply by
 # changing `PATH_TO_CKPT` to point to a new .pb file. By default we use an "SSD with Mobilenet" model here. See the [
 # detection model zoo](https://github.com/tensorflow/models/blob/master/object_detection/g3doc/detection_model_zoo.md
@@ -35,8 +35,8 @@ from utils import visualization_utils as vis_util
 
 
 # Setting model name
-# MODEL_NAME = 'ssd_mobilenet_v1_coco_11_06_2017'
-MODEL_NAME = 'ssd_mobilenet_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03'
+MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+# MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
 DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
@@ -49,81 +49,80 @@ PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
 NUM_CLASSES = 90
 
 
-# Download Model and extract
+# Download Model if needed, and extract
 if not os.path.exists(MODEL_NAME + '/frozen_inference_graph.pb'):
-    print ('Downloading the model')
-    opener = urllib.request.URLopener()
-    opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
-    tar_file = tarfile.open(MODEL_FILE)
-    for file in tar_file.getmembers():
-        file_name = os.path.basename(file.name)
-        if 'frozen_inference_graph.pb' in file_name:
-            tar_file.extract(file, os.getcwd())
-    print ('Download complete')
+	print ('Downloading the model')
+	opener = urllib.request.URLopener()
+	opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
+	tar_file = tarfile.open(MODEL_FILE)
+	for file in tar_file.getmembers():
+		file_name = os.path.basename(file.name)
+		if 'frozen_inference_graph.pb' in file_name:
+			tar_file.extract(file, os.getcwd())
+	print ('Download complete')
 else:
-    print ('Model already exists')
+	print ('Model already exists')
+
 
 
 # ## Load a (frozen) Tensorflow model into memory.
+# normal graph used for detection
 detection_graph = tf.Graph()
 with detection_graph.as_default():
-    od_graph_def = tf.GraphDef()
-    with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
-        serialized_graph = fid.read()
-        od_graph_def.ParseFromString(serialized_graph)
-        tf.import_graph_def(od_graph_def, name='')
+	# serialized graph to read frozen model from .pb file
+	graph_def = tf.GraphDef()
+	with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as f:
+		graph_def.ParseFromString(f.read())
+		# import serialized graph to detection_graph
+		tf.import_graph_def(graph_def, name='')
 
 
-# ## Loading label map Label maps map indices to category names, so that when our convolution network predicts `5`,
+
+
+# ## Loading label map
+# Label maps map indices to category names, so that when our convolution network predicts `5`,
 # we know that this corresponds to `airplane`. Here we use internal utility functions, but anything that returns a
 # dictionary mapping integers to appropriate string labels would be fine
-
 label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
 categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
-# intializing the web camera device
 
+
+# intializing the web camera device
 cap = cv2.VideoCapture(0)
+
+
 
 # Running the tensorflow session
 with detection_graph.as_default():
-    with tf.Session(graph=detection_graph) as sess:
-        ret = True
-        while (ret):
-            ret ,image_np = cap.read()
-            # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
-            image_np_expanded = np.expand_dims(image_np, axis=0)
-            image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
-            # Each box represents a part of the image where a particular object was detected.
-            boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
-            # Each score represent how level of confidence for each of the objects.
-            # Score is shown on the result image, together with the class label.
-            scores = detection_graph.get_tensor_by_name('detection_scores:0')
-            classes = detection_graph.get_tensor_by_name('detection_classes:0')
-            num_detections = detection_graph.get_tensor_by_name('num_detections:0')
-            # Actual detection.
-            (boxes, scores, classes, num_detections) = sess.run(
-              [boxes, scores, classes, num_detections],
-              feed_dict={image_tensor: image_np_expanded})
-            # Visualization of the results of a detection.
-            vis_util.visualize_boxes_and_labels_on_image_array(
-              image_np,
-              np.squeeze(boxes),
-              np.squeeze(classes).astype(np.int32),
-              np.squeeze(scores),
-              category_index,
-              use_normalized_coordinates=True,
-              line_thickness=8)
-            cv2.imshow('image' ,cv2.resize(image_np ,(1280 ,960)))
-
-            #      img = cv2.imread('image')
-            #      plt.imshow(img, cmap='gray', interpolation='bicubic')
-            #      plt.xticks([]), plt.yticks([])  # to hide tick values on X and Y axis
-            #      plt.show()
+	with tf.Session(graph=detection_graph) as sess:
+		ret = True
+		while (ret):
+			ret,image_np = cap.read()
+			# Expand dimensions since the model expects images to have shape: [1, None, None, 3]
+			image_np_expanded = np.expand_dims(image_np, axis=0)
+			image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
+			# Each box represents a part of the image where a particular object was detected.
+			boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
+			# Each score represent how level of confidence for each of the objects.
+			# Score is shown on the result image, together with the class label.
+			scores = detection_graph.get_tensor_by_name('detection_scores:0')
+			classes = detection_graph.get_tensor_by_name('detection_classes:0')
+			num_detections = detection_graph.get_tensor_by_name('num_detections:0')
+			# Actual detection.
+			(boxes, scores, classes, num_detections) = sess.run([boxes, scores, classes, num_detections],
+																feed_dict={image_tensor: image_np_expanded})
+			# Visualization of the results of a detection.
+			vis_util.visualize_boxes_and_labels_on_image_array(image_np, np.squeeze(boxes),
+															   np.squeeze(classes).astype(np.int32),
+															   np.squeeze(scores),
+															   category_index, use_normalized_coordinates=True,
+															   line_thickness=8)
+			cv2.imshow('image' ,cv2.resize(image_np ,(1280 ,960)))
 
 
-            if cv2.waitKey(25) & 0xFF == ord('q'):
-                cv2.destroyAllWindows()
-                cap.release()
-                break
+			if cv2.waitKey(25) & 0xFF == ord('q'):
+				cv2.destroyAllWindows()
+				cap.release()
+				break
