@@ -147,8 +147,19 @@ class ShakespeareAccuracy(ShakespeareBenchmarkBase):
     FLAGS.model_dir = ''
     self._run_and_report_benchmark()
 
+  def benchmark_1_gpu_no_ds(self):
+    """Benchmark 1 gpu without distribution strategies."""
+    self._setup()
+    FLAGS.num_gpus = 1
+    FLAGS.training_data = self.train_data
+    FLAGS.batch_size = 64
+    FLAGS.train_epochs = 43
+    FLAGS.model_dir = ''
+    FLAGS.distribution_strategy = 'off'
+    self._run_and_report_benchmark()
+
   def benchmark_1_gpu_no_ds_run_eagerly(self):
-    """Benchmark 1 gpu."""
+    """Benchmark 1 gpu without distribution strategies and run eagerly."""
     self._setup()
     FLAGS.num_gpus = 1
     FLAGS.training_data = self.train_data
@@ -156,6 +167,18 @@ class ShakespeareAccuracy(ShakespeareBenchmarkBase):
     FLAGS.train_epochs = 43
     FLAGS.model_dir = ''
     FLAGS.run_eagerly = True
+    FLAGS.distribution_strategy = 'off'
+    self._run_and_report_benchmark()
+
+  def benchmark_1_gpu_no_ds_force_v2(self):
+    """Benchmark 1 gpu no ds with force_v2 in keras.compile."""
+    self._setup()
+    FLAGS.num_gpus = 1
+    FLAGS.training_data = self.train_data
+    FLAGS.batch_size = 64
+    FLAGS.train_epochs = 43
+    FLAGS.model_dir = ''
+    FLAGS.force_v2_in_keras_compile = True
     FLAGS.distribution_strategy = 'off'
 
     self._run_and_report_benchmark()
@@ -220,6 +243,7 @@ class ShakespeareKerasBenchmarkReal(ShakespeareBenchmarkBase):
     def_flags['training_data'] = self.train_data
     def_flags['model_dir'] = ''
     def_flags['train_epochs'] = 4
+    def_flags['log_steps'] = 50
 
     super(ShakespeareKerasBenchmarkReal, self).__init__(
         output_dir=output_dir,
@@ -250,6 +274,14 @@ class ShakespeareKerasBenchmarkReal(ShakespeareBenchmarkBase):
     FLAGS.distribution_strategy = 'off'
     self._run_and_report_benchmark()
 
+  def benchmark_cpu_no_ds_force_v2(self):
+    """Benchmark cpu no ds, and force v2."""
+    self._setup()
+    FLAGS.num_gpus = 0
+    FLAGS.batch_size = 64
+    FLAGS.distribution_strategy = 'off'
+    self._run_and_report_benchmark()
+
   def benchmark_1_gpu(self):
     """Benchmark 1 gpu."""
     self._setup()
@@ -262,6 +294,15 @@ class ShakespeareKerasBenchmarkReal(ShakespeareBenchmarkBase):
     self._setup()
     FLAGS.num_gpus = 1
     FLAGS.batch_size = 64
+    FLAGS.distribution_strategy = 'off'
+    self._run_and_report_benchmark()
+
+  def benchmark_1_gpu_no_ds_force_v2(self):
+    """Benchmark 1 gpu no ds, and force v2."""
+    self._setup()
+    FLAGS.num_gpus = 1
+    FLAGS.batch_size = 64
+    FLAGS.force_v2_in_keras_compile = True
     FLAGS.distribution_strategy = 'off'
     self._run_and_report_benchmark()
 
@@ -287,6 +328,7 @@ class ShakespeareKerasBenchmarkReal(ShakespeareBenchmarkBase):
     self._setup()
     FLAGS.num_gpus = 8
     FLAGS.batch_size = 64 * 8
+    FLAGS.log_steps = 10
     self._run_and_report_benchmark()
 
   def benchmark_xla_8_gpu(self):
@@ -294,10 +336,11 @@ class ShakespeareKerasBenchmarkReal(ShakespeareBenchmarkBase):
     self._setup()
     FLAGS.num_gpus = 1
     FLAGS.batch_size = 64 * 8
+    FLAGS.log_steps = 10
     FLAGS.enable_xla = True
     self._run_and_report_benchmark()
 
   def _run_and_report_benchmark(self):
     """Run and report benchmark."""
     super(ShakespeareKerasBenchmarkReal, self)._run_and_report_benchmark(
-        top_1_train_min=None)
+        top_1_train_min=None, log_steps=FLAGS.log_steps)

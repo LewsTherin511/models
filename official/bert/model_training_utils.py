@@ -23,6 +23,7 @@ import os
 
 from absl import logging
 import tensorflow as tf
+from official.utils.misc import distribution_utils
 
 _SUMMARY_TXT = 'training_summary.txt'
 _MIN_SUMMARY_STEPS = 10
@@ -196,7 +197,7 @@ def run_customized_training_loop(
   with tf.device(get_primary_cpu_task(use_remote_tpu)):
     train_iterator = _get_input_iterator(train_input_fn, strategy)
 
-    with strategy.scope():
+    with distribution_utils.get_strategy_scope(strategy):
       # To correctly place the model weights on accelerators,
       # model and optimizer should be created in scope.
       model, sub_model = model_fn()
@@ -242,7 +243,8 @@ def run_customized_training_loop(
           model_outputs = model(inputs)
           loss = loss_fn(labels, model_outputs)
 
-        tvars = model.trainable_variables
+        # De-dupes variables due to keras tracking issues.
+        tvars = list(set(model.trainable_variables))
         grads = tape.gradient(loss, tvars)
         optimizer.apply_gradients(zip(grads, tvars))
         # For reporting, the metric takes the mean of losses.

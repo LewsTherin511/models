@@ -55,7 +55,8 @@ def define_flags():
                                 synthetic_data=False,
                                 max_train_steps=False,
                                 dtype=False,
-                                enable_xla=True)
+                                enable_xla=True,
+                                force_v2_in_keras_compile=True)
 
   flags_core.set_defaults(train_epochs=43,
                           batch_size=64)
@@ -70,6 +71,10 @@ def define_flags():
   flags.DEFINE_integer(
       name='predict_length', default=1000,
       help='Length of the predicted text including the context.')
+  flags.DEFINE_integer(
+      name='log_steps', default=100,
+      help='For every log_steps, we log the timing information such as '
+      'examples per second.')
   flags.DEFINE_string(
       name='training_data', default=None,
       help='Path to file containing the training data.')
@@ -162,7 +167,8 @@ def train_model(flags_obj, dataset, vocab_size, strategy, checkpoint_dir=None):
                   metrics=[
                       tf.keras.metrics.Recall(top_k=1, name='RecallAt1'),
                       tf.keras.metrics.Recall(top_k=5, name='RecallAt5')],
-                  run_eagerly=flags_obj.run_eagerly)
+                  run_eagerly=flags_obj.run_eagerly,
+                  run_distributed=flags_obj.force_v2_in_keras_compile)
 
   callbacks = []
   if checkpoint_dir:
@@ -171,7 +177,8 @@ def train_model(flags_obj, dataset, vocab_size, strategy, checkpoint_dir=None):
         filepath=checkpoint_prefix,
         save_weights_only=True)
     callbacks.append(checkpoint_callback)
-  time_callback = keras_utils.TimeHistory(flags_obj.batch_size, 100)
+  time_callback = keras_utils.TimeHistory(flags_obj.batch_size,
+                                          flags_obj.log_steps)
   callbacks.append(time_callback)
   history = model.fit(dataset,
                       epochs=flags_obj.train_epochs,
