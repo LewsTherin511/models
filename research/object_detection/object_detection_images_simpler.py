@@ -73,7 +73,7 @@ with detection_graph.as_default():
 	graph_def = tf.GraphDef()
 	with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as f:
 		graph_def.ParseFromString(f.read())
-		# import serialized graph to detection_graph
+		# import serialized graph to 'detection_graph' (set as default above)
 		tf.import_graph_def(graph_def, name='')
 
 
@@ -102,9 +102,9 @@ def load_image_into_numpy_array(image):
 #   Detection routine   #
 #-----------------------#
 def run_inference_for_single_image(image_np_expanded, detection_graph):
-	# Running the tensorflow session
 	with detection_graph.as_default():
 		with tf.Session(graph=detection_graph) as sess:
+			# tensor in the graph corresponding to the picture to analyze, must be fed with picture during Session
 			image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')
 			# Each box represents a part of the image where a particular object was detected.
 			boxes = detection_graph.get_tensor_by_name('detection_boxes:0')
@@ -192,6 +192,6 @@ for image_path in test_img_list:
 # 		cv2.destroyAllWindows()
 # 		cap.release()
 # 		break
-#------------------------------#
-#------------------------------#
-#------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#
+#--------------------------------------------------------------------------#

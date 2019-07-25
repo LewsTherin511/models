@@ -82,7 +82,7 @@ with detection_graph.as_default():
 	graph_def = tf.GraphDef()
 	with tf.gfile.GFile(PATH_TO_FROZEN_GRAPH, 'rb') as f:
 		graph_def.ParseFromString(f.read())
-		# import serialized graph to detection_graph
+		# import serialized graph to 'detection_graph' (set as default above)
 		tf.import_graph_def(graph_def, name='')
 
 # ## Loading label map
@@ -104,17 +104,23 @@ def load_image_into_numpy_array(image):
 #-----------------------#
 #   Detection routine   #
 #-----------------------#
-def run_inference_for_single_image(image, graph):
+def run_inference_for_single_image(image_np_expanded, graph):
 	with graph.as_default():
 		with tf.Session() as sess:
 			# Get handles to input and output tensors
 			ops = tf.get_default_graph().get_operations()
+			# names of all tensors present in the graph
 			all_tensor_names = {output.name for op in ops for output in op.outputs}
 			tensor_dict = {}
+
+			# check if any of the tensors in the graph is named as one of the keys below
 			for key in ['num_detections', 'detection_boxes', 'detection_scores', 'detection_classes', 'detection_masks']:
 				tensor_name = key + ':0'
+				# if any tensor in graph has same name as key, create an entry in 'tensor_dict' and add tensor using key as label
 				if tensor_name in all_tensor_names:
 					tensor_dict[key] = tf.get_default_graph().get_tensor_by_name(tensor_name)
+
+			# if 'detection mask' is one of tensors found in graph, do SOMETHING WITH IT???
 			if 'detection_masks' in tensor_dict:
 				# The following processing is only for single image
 				detection_boxes = tf.squeeze(tensor_dict['detection_boxes'], [0])
@@ -124,21 +130,22 @@ def run_inference_for_single_image(image, graph):
 				detection_boxes = tf.slice(detection_boxes, [0, 0], [real_num_detection, -1])
 				detection_masks = tf.slice(detection_masks, [0, 0, 0], [real_num_detection, -1, -1])
 				detection_masks_reframed = utils_ops.reframe_box_masks_to_image_masks(
-					detection_masks, detection_boxes, image.shape[1], image.shape[2])
+					detection_masks, detection_boxes, image_np_expanded.shape[1], image_np_expanded.shape[2])
 				detection_masks_reframed = tf.cast(
 					tf.greater(detection_masks_reframed, 0.5), tf.uint8)
 				# Follow the convention by adding back the batch dimension
-				tensor_dict['detection_masks'] = tf.expand_dims(
-					detection_masks_reframed, 0)
+				tensor_dict['detection_masks'] = tf.expand_dims(detection_masks_reframed, 0)
+
+			# tensor in the graph corresponding to the picture to analyze, must be fed with picture during Session
 			image_tensor = tf.get_default_graph().get_tensor_by_name('image_tensor:0')
 
-			# Run inference
-			output_dict = sess.run(tensor_dict, feed_dict={image_tensor: image})
+			# Actual detection (same as in simplified version, just instead of listing the tensors
+			# to evaluate you give 'tensor_dict' as argument)
+			output_dict = sess.run(tensor_dict, feed_dict={image_tensor: image_np_expanded})
 
 			# all outputs are float32 numpy arrays, so convert types as appropriate
 			output_dict['num_detections'] = int(output_dict['num_detections'][0])
-			output_dict['detection_classes'] = output_dict[
-				'detection_classes'][0].astype(np.int64)
+			output_dict['detection_classes'] = output_dict['detection_classes'][0].astype(np.int64)
 			output_dict['detection_boxes'] = output_dict['detection_boxes'][0]
 			output_dict['detection_scores'] = output_dict['detection_scores'][0]
 			if 'detection_masks' in output_dict:
