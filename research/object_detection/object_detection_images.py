@@ -116,11 +116,14 @@ def run_inference_for_single_image(image_np_expanded, graph):
 			# check if any of the tensors in the graph is named as one of the keys below
 			for key in ['num_detections', 'detection_boxes', 'detection_scores', 'detection_classes', 'detection_masks']:
 				tensor_name = key + ':0'
-				# if any tensor in graph has same name as key, create an entry in 'tensor_dict' and add tensor using key as label
+				# if any tensor has same name as one of the keys, add tensor to 'tensor_dict' using that key as label
+				# Es. (tensor_dict['detection_classes'] = detection_classes)
 				if tensor_name in all_tensor_names:
 					tensor_dict[key] = tf.get_default_graph().get_tensor_by_name(tensor_name)
 
+			# --------------------------------------------------------------------------------------
 			# if 'detection mask' is one of tensors found in graph, do SOMETHING WITH IT???
+			# --------------------------------------------------------------------------------------
 			if 'detection_masks' in tensor_dict:
 				# The following processing is only for single image
 				detection_boxes = tf.squeeze(tensor_dict['detection_boxes'], [0])
@@ -135,6 +138,7 @@ def run_inference_for_single_image(image_np_expanded, graph):
 					tf.greater(detection_masks_reframed, 0.5), tf.uint8)
 				# Follow the convention by adding back the batch dimension
 				tensor_dict['detection_masks'] = tf.expand_dims(detection_masks_reframed, 0)
+			# --------------------------------------------------------------------------------------
 
 			# tensor in the graph corresponding to the picture to analyze, must be fed with picture during Session
 			image_tensor = tf.get_default_graph().get_tensor_by_name('image_tensor:0')

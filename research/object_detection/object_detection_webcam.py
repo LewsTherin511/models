@@ -35,7 +35,8 @@ from utils import visualization_utils as vis_util
 
 
 # Setting model name
-MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+MODEL_NAME = 'ssd_mobilenet_v1_coco_2018_01_28'
+# MODEL_NAME = 'faster_rcnn_inception_resnet_v2_atrous_coco_2018_01_28'
 # MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
 DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
