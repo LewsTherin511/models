@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='object_detection.protos',
   syntax='proto2',
   serialized_options=None,
-  serialized_pb=_b('\n-object_detection/protos/post_processing.proto\x12\x17object_detection.protos\x1a)object_detection/protos/calibration.proto\"\x89\x02\n\x16\x42\x61tchNonMaxSuppression\x12\x1a\n\x0fscore_threshold\x18\x01 \x01(\x02:\x01\x30\x12\x1a\n\riou_threshold\x18\x02 \x01(\x02:\x03\x30.6\x12%\n\x18max_detections_per_class\x18\x03 \x01(\x05:\x03\x31\x30\x30\x12!\n\x14max_total_detections\x18\x05 \x01(\x05:\x03\x31\x30\x30\x12 \n\x11use_static_shapes\x18\x06 \x01(\x08:\x05\x66\x61lse\x12%\n\x16use_class_agnostic_nms\x18\x07 \x01(\x08:\x05\x66\x61lse\x12$\n\x19max_classes_per_detection\x18\x08 \x01(\x05:\x01\x31\"\xd9\x02\n\x0ePostProcessing\x12R\n\x19\x62\x61tch_non_max_suppression\x18\x01 \x01(\x0b\x32/.object_detection.protos.BatchNonMaxSuppression\x12Y\n\x0fscore_converter\x18\x02 \x01(\x0e\x32\x36.object_detection.protos.PostProcessing.ScoreConverter:\x08IDENTITY\x12\x16\n\x0blogit_scale\x18\x03 \x01(\x02:\x01\x31\x12\x46\n\x12\x63\x61libration_config\x18\x04 \x01(\x0b\x32*.object_detection.protos.CalibrationConfig\"8\n\x0eScoreConverter\x12\x0c\n\x08IDENTITY\x10\x00\x12\x0b\n\x07SIGMOID\x10\x01\x12\x0b\n\x07SOFTMAX\x10\x02')
+  serialized_pb=_b('\n-object_detection/protos/post_processing.proto\x12\x17object_detection.protos\x1a)object_detection/protos/calibration.proto\"\xa4\x02\n\x16\x42\x61tchNonMaxSuppression\x12\x1a\n\x0fscore_threshold\x18\x01 \x01(\x02:\x01\x30\x12\x1a\n\riou_threshold\x18\x02 \x01(\x02:\x03\x30.6\x12%\n\x18max_detections_per_class\x18\x03 \x01(\x05:\x03\x31\x30\x30\x12!\n\x14max_total_detections\x18\x05 \x01(\x05:\x03\x31\x30\x30\x12 \n\x11use_static_shapes\x18\x06 \x01(\x08:\x05\x66\x61lse\x12%\n\x16use_class_agnostic_nms\x18\x07 \x01(\x08:\x05\x66\x61lse\x12$\n\x19max_classes_per_detection\x18\x08 \x01(\x05:\x01\x31\x12\x19\n\x0esoft_nms_sigma\x18\t \x01(\x02:\x01\x30\"\xd9\x02\n\x0ePostProcessing\x12R\n\x19\x62\x61tch_non_max_suppression\x18\x01 \x01(\x0b\x32/.object_detection.protos.BatchNonMaxSuppression\x12Y\n\x0fscore_converter\x18\x02 \x01(\x0e\x32\x36.object_detection.protos.PostProcessing.ScoreConverter:\x08IDENTITY\x12\x16\n\x0blogit_scale\x18\x03 \x01(\x02:\x01\x31\x12\x46\n\x12\x63\x61libration_config\x18\x04 \x01(\x0b\x32*.object_detection.protos.CalibrationConfig\"8\n\x0eScoreConverter\x12\x0c\n\x08IDENTITY\x10\x00\x12\x0b\n\x07SIGMOID\x10\x01\x12\x0b\n\x07SOFTMAX\x10\x02')
   ,
   dependencies=[object__detection_dot_protos_dot_calibration__pb2.DESCRIPTOR,])
 
@@ -48,8 +48,8 @@ _POSTPROCESSING_SCORECONVERTER = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=675,
-  serialized_end=731,
+  serialized_start=702,
+  serialized_end=758,
 )
 _sym_db.RegisterEnumDescriptor(_POSTPROCESSING_SCORECONVERTER)
 
@@ -110,6 +110,13 @@ _BATCHNONMAXSUPPRESSION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='soft_nms_sigma', full_name='object_detection.protos.BatchNonMaxSuppression.soft_nms_sigma', index=7,
+      number=9, type=2, cpp_type=6, label=1,
+      has_default_value=True, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -123,7 +130,7 @@ _BATCHNONMAXSUPPRESSION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=118,
-  serialized_end=383,
+  serialized_end=410,
 )
 
 
@@ -175,8 +182,8 @@ _POSTPROCESSING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=386,
-  serialized_end=731,
+  serialized_start=413,
+  serialized_end=758,
 )
 
 _POSTPROCESSING.fields_by_name['batch_non_max_suppression'].message_type = _BATCHNONMAXSUPPRESSION

@@ -34,6 +34,10 @@ from utils import visualization_utils as vis_util
 # ) for a list of other models that can be run out-of-the-box with varying speeds and accuracies.
 
 
+
+#################################################################
+#################################################################
+#################################################################
 # Setting model name
 MODEL_NAME = 'ssd_mobilenet_v1_coco_2018_01_28'
 # MODEL_NAME = 'faster_rcnn_inception_resnet_v2_atrous_coco_2018_01_28'
@@ -48,6 +52,19 @@ PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
 
 NUM_CLASSES = 90
+#################################################################
+#################################################################
+#################################################################
+# # What model to download.
+# MODEL_NAME = 'mac_n_cheese_inference_graph'
+# # Path to frozen detection graph. This is the actual model that is used for the object detection.
+# PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+# # List of the strings that is used to add correct label for each box.
+# PATH_TO_LABELS = os.path.join('training', 'object-detection.pbtxt')
+# NUM_CLASSES = 1
+#################################################################
+#################################################################
+#################################################################
 
 
 # Download Model if needed, and extract
