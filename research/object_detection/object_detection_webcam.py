@@ -39,9 +39,12 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 # Setting model name
-MODEL_NAME = 'ssd_mobilenet_v1_coco_2018_01_28'
+# MODEL_NAME = 'ssd_mobilenet_v1_coco_2018_01_28'
+# unbearably slow
 # MODEL_NAME = 'faster_rcnn_inception_resnet_v2_atrous_coco_2018_01_28'
+# slow, but still ok
 # MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
+MODEL_NAME = 'faster_rcnn_resnet50_lowproposals_coco_2018_01_28'
 MODEL_FILE = MODEL_NAME + '.tar.gz'
 DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
 
@@ -60,7 +63,7 @@ NUM_CLASSES = 90
 # # Path to frozen detection graph. This is the actual model that is used for the object detection.
 # PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # # List of the strings that is used to add correct label for each box.
-# PATH_TO_LABELS = os.path.join('training', 'object-detection.pbtxt')
+# PATH_TO_LABELS = os.path.join('data', 'mac_n_cheese_label_map.pbtxt')
 # NUM_CLASSES = 1
 #################################################################
 #################################################################
@@ -108,7 +111,9 @@ category_index = label_map_util.create_category_index(categories)
 
 
 # intializing the web camera device
+# USE THIS FOR WEBCAM
 cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture("a_video_1_subs.MP4")
 
 
 
