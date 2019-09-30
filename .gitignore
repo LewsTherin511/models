@@ -103,25 +103,3 @@ samples/outreach/blogs/segmentation_blogpost/carvana-image-masking-challenge/
 
 
 
-research/object_detection/faster_rcnn_inception_resnet_v2_atrous_lowproposals_oid_2018_01_28.tar.gz
-research/object_detection/faster_rcnn_inception_resnet_v2_atrous_lowproposals_oid_2018_01_28/
-research/object_detection/faster_rcnn_inception_resnet_v2_atrous_oid_2018_01_28.tar.gz
-research/object_detection/faster_rcnn_inception_resnet_v2_atrous_oid_v4_2018_12_12.tar.gz
-research/object_detection/faster_rcnn_inception_resnet_v2_atrous_oid_v4_2018_12_12/
-research/object_detection/faster_rcnn_inception_v2_coco_2018_01_28/
-research/object_detection/results/
-research/object_detection/ssd_mobilenet_v1_coco_11_06_2017.tar.gz
-research/object_detection/ssd_mobilenet_v1_coco_11_06_2017/
-research/object_detection/ssd_mobilenet_v1_coco_2017_11_17.tar.gz
-research/object_detection/ssd_mobilenet_v1_coco_2017_11_17/
-research/object_detection/ssd_mobilenet_v2_oid_v4_2018_12_12.tar.gz
-research/object_detection/ssd_mobilenet_v2_oid_v4_2018_12_12/
-research/object_detection/test_images/*.*
-saved_variable/
-research/object_detection/images
-research/object_detection/images/train
-research/object_detection/images/test
-research/object_detection/images/train/*
-research/object_detection/images/test/*
-research/object_detection/test_images_results
-research/object_detection/test_images_results/*
