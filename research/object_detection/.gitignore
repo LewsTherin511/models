@@ -17,16 +17,12 @@ images/train
 images/test
 images/train/*
 images/test/*
+test_images/*
 test_images_results
 test_images_results/*
-training/00a/
-training/00a/*
-training/02/
-training/02/*
-training/03/
-training/03/*
-training/04/
-training/04/*
+training_process
+training_process/*
+
 
 
 ssd_mobilenet_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03*

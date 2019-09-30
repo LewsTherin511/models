@@ -54,7 +54,7 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 # What model to download.
-MODEL_NAME = 'custom_inference_graph/03/'
+MODEL_NAME = 'custom_inference_graph/04/'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # List of the strings that is used to add correct label for each box.
@@ -174,7 +174,7 @@ for image_path in test_img_list:
 
 	plt.figure(figsize=IMAGE_SIZE)
 	plt.imshow(image_np)
-	plt.imsave(f'./test_images_results/img_{img_count:02d}.jpg', image_np)
+	plt.imsave(f'./test_images_results/04/img_{img_count:02d}.jpg', image_np)
 	img_count+=1
 # #------------------------------#
 # #------------------------------#
