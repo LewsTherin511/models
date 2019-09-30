@@ -118,3 +118,10 @@ research/object_detection/ssd_mobilenet_v2_oid_v4_2018_12_12.tar.gz
 research/object_detection/ssd_mobilenet_v2_oid_v4_2018_12_12/
 research/object_detection/test_images/*.*
 saved_variable/
+research/object_detection/images
+research/object_detection/images/train
+research/object_detection/images/test
+research/object_detection/images/train/*
+research/object_detection/images/test/*
+research/object_detection/test_images_results
+research/object_detection/test_images_results/*

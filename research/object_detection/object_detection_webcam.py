@@ -59,11 +59,11 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 # What model to download.
-MODEL_NAME = 'custom_inference_graph/mac_n_cheese'
+MODEL_NAME = 'custom_inference_graph/03/'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('data', 'macncheese_label_map.pbtxt')
+PATH_TO_LABELS = os.path.join('data', 'guitar_label_map.pbtxt')
 NUM_CLASSES = 1
 #################################################################
 #################################################################
@@ -112,8 +112,8 @@ category_index = label_map_util.create_category_index(categories)
 
 # intializing the web camera device
 # USE THIS FOR WEBCAM
-# cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture("mac.mp4")
+cap = cv2.VideoCapture(0)
+# cap = cv2.VideoCapture("run.mp4")
 
 
 

@@ -54,11 +54,11 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 # What model to download.
-MODEL_NAME = 'mac_n_cheese_inference_graph'
+MODEL_NAME = 'custom_inference_graph/03/'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('data', 'mac_n_cheese_label_map.pbtxt')
+PATH_TO_LABELS = os.path.join('data', 'guitar_label_map.pbtxt')
 NUM_CLASSES = 1
 #################################################################
 #################################################################
@@ -174,7 +174,7 @@ for image_path in test_img_list:
 
 	plt.figure(figsize=IMAGE_SIZE)
 	plt.imshow(image_np)
-	plt.imsave(f'./results/img_{img_count:02d}.jpg', image_np)
+	plt.imsave(f'./test_images_results/img_{img_count:02d}.jpg', image_np)
 	img_count+=1
 # #------------------------------#
 # #------------------------------#
