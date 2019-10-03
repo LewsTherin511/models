@@ -1,0 +1,70 @@
+Test_00:
+	* images from matej (train/test: 43/5)
+	* high resolution. no bbox (whole image as bbox)
+	* PC -> doesn't even begin (completely stuck even before step1)
+	* colab -> crashes after 2 steps
+
+
+Test_00a:
+	* 48 images (40/8)
+	* low resolution, no bbox
+	* incredibly fast training, loss<1 after a few steps!
+	* EVERYTHING IS A GUITAR!!! (99%)
+
+
+Test_01:
+	* 48 images (40/8)
+	* high resolution, bbox
+	* PC -> works, but REALLY SLOW (1st step took 87s)
+	* colab -> crashes after 2 steps AGAIN!!!
+
+
+Test_02:
+	REPEATING!!!!!!!!
+	* 48 images (40/8)
+	* low resolution, bboxes
+	* not really working, identifies random guitars
+
+
+
+Downloaded 1000 images + bboxes from OpenImage
+
+
+Test_03:
+	* HAVE TO REPEAT IT AS WELL, THERE WAS NO VALIDATION!!!
+	* first 100 images as train, last 100 as test
+	* loss = 8291 steps/1.0543
+	* stil horrible
+
+
+Test_04:
+	* first 200 images as train, last 100 as test
+	* 16k steps, loss = ??? (check)
+	* much better on video
+
+
+**** slight over-fitting, modified model_main.py by adding
+		config = tf.estimator.RunConfig(model_dir=FLAGS.model_dir, keep_checkpoint_max=None)
+	so that it keeps all the checkpoints
+
+
+
+Test_05:
+	* first 300 images as train, last 100 as test
+
+   STEPS  |  Train Loss  |  Valid Loss
+  --------------------------------------
+    4375  |     2.1      |    8.2
+    7040  |     1.3      |    9.1
+     10K  |     1.8      |    9.0
+   12.4K  |     1.6      |    9.6
+   23.8K  |     1.2      |    9.8 
+
+
+
+Test_06:
+	* 600 images
+
+
+
+

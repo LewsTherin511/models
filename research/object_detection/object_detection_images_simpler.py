@@ -114,7 +114,8 @@ category_index = label_map_util.create_category_index(categories)
 # ## Helper code
 def load_image_into_numpy_array(image):
 	(im_width, im_height) = image.size
-	return np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
+	channel_dict = {'L': 1, 'RGB': 3}  # 'L' for Grayscale, 'RGB' : for 3 channel images
+	return np.array(image.getdata()).reshape((im_height, im_width, channel_dict[image.mode])).astype(np.uint8)
 
 
 
@@ -142,6 +143,13 @@ def run_inference_for_single_image(image_np_expanded, detection_graph):
 
 
 
+#-----------------------#
+#   grayscale to RGB    #
+#-----------------------#
+def Check3D(image_np):
+	if (image_np.shape[2] != 3):
+		image_np = np.broadcast_to(image_np, (image_np.shape[0], image_np.shape[1], 3)).copy()  # Duplicating the Content
+	return image_np
 
 
 
@@ -151,15 +159,26 @@ def run_inference_for_single_image(image_np_expanded, detection_graph):
 # Size, in inches, of the output images.
 IMAGE_SIZE = (12, 8)
 test_img_path = "test_images/"
-num_test_images = len([f for f in os.listdir(test_img_path) if os.path.isfile(os.path.join(test_img_path, f))])
-test_img_list = [os.path.join(test_img_path, f'image{i:02d}.jpg') for i in range(1, num_test_images+1) ]
-img_count = 0
-for image_path in test_img_list:
-	image = Image.open(image_path)
+
+# test_images_list = [image_name for image_name in os.listdir(test_img_path)]
+# num_test_images = len(test_images_list)
+
+for image_name in os.listdir(test_img_path):
+	image_full_path = test_img_path + image_name
+	image = Image.open(image_full_path)
 	# array-based representation of image will be used later to prepare result image with boxes and labels on it
 	image_np = load_image_into_numpy_array(image)
+
+	# if image_np.shape[2] != 3:
+	# 	print("Grayscale image, converting")
+	# 	image_np = np.broadcast_to(image_np, (image_np.shape[0], image_np.shape[1], 3)).copy()  # Duplicating the Content
+
+	# check if image is RGB or grayscale, and if grayscale convert to RGB
+	image_np = Check3D(image_np)
+
 	# Expand dimensions since the model expects images to have shape: [1, None, None, 3]
 	image_np_expanded = np.expand_dims(image_np, axis=0)
+
 	# Actual detection.
 	(boxes, scores, classes, num_detections) = run_inference_for_single_image(image_np_expanded, detection_graph)
 
@@ -174,8 +193,8 @@ for image_path in test_img_list:
 
 	plt.figure(figsize=IMAGE_SIZE)
 	plt.imshow(image_np)
-	plt.imsave(f'./test_images_results/04/img_{img_count:02d}.jpg', image_np)
-	img_count+=1
+	plt.imsave(f'./test_images_results/04/{image_name}', image_np)
+	plt.close()
 # #------------------------------#
 # #------------------------------#
 # #------------------------------#

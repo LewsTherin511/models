@@ -59,7 +59,7 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 # What model to download.
-MODEL_NAME = 'custom_inference_graph/03/'
+MODEL_NAME = 'custom_inference_graph/02/'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # List of the strings that is used to add correct label for each box.
@@ -137,12 +137,15 @@ with detection_graph.as_default():
 				# Actual detection.
 				(boxes, scores, classes, num_detections) = sess.run([boxes, scores, classes, num_detections],
 																	feed_dict={image_tensor: image_np_expanded})
+				# print(scores)
+				# print(classes)
 			# Visualization of the results of a detection.
 			vis_util.visualize_boxes_and_labels_on_image_array(image_np, np.squeeze(boxes),
 																   np.squeeze(classes).astype(np.int32),
 																   np.squeeze(scores),
 																   category_index, use_normalized_coordinates=True,
-																   line_thickness=8)
+															   	   min_score_thresh = .65,
+																   line_thickness=3)
 
 			cv2.imshow('image' ,cv2.resize(image_np ,(1280 ,960)))
 			count_frame +=1

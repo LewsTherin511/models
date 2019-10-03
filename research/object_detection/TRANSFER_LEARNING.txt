@@ -5,29 +5,20 @@
 export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
 
 
+GENERATE RECORDS
 python generate_tfrecord.py --csv_input=data/train_labels.csv --output_path=data/train.record --image_dir=images/train
 python generate_tfrecord.py --csv_input=data/test_labels.csv --output_path=data/test.record --image_dir=images/test
 
 
-
-MODIFY .config FILE!!!
-python train.py --logtostderr --train_dir=training_process/ --pipeline_config_path=training_config/ssd_mobilenet_v1_coco_guitar.config
-python eval.py --logtostderr --pipeline_config_path=training_config/ssd_mobilenet_v1_coco_guitar.config --checkpoint_dir=training_process/04/ --eval_dir=eval/04/
-
-***  OR  ***
-
+TRAIN (NEW)
 python model_main.py --pipeline_config_path=training_config/ssd_mobilenet_v1_coco_guitar.config --model_dir=training_process/04/ --sample_1_of_n_eval_examples=1 --alsologtostderr
 
-sample_1_of_n_eval_examples: Integer representing how often an eval example
-  should be sampled. If 1, will sample all examples.
+(sample_1_of_n_eval_examples: Integer representing how often an eval example
+  should be sampled. If 1, will sample all examples.)
 
 
-
-
-
-
-
-python export_inference_graph.py --input_type image_tensor --pipeline_config_path training_config/ssd_mobilenet_v1_coco.config --trained_checkpoint_prefix training_process/model.ckpt-1147 --output_directory mac_n_cheese_inference_graph
+EXPORT GRAPH
+python export_inference_graph.py --input_type image_tensor --pipeline_config_path training_config/ssd_mobilenet_v1_coco_guitar.config --trained_checkpoint_prefix training_process/04/model.ckpt-18948 --output_directory custom_inference_graph/04/
 
 
 tensorboard --logdir=logs/visualize_graph --host localhost
@@ -36,6 +27,23 @@ there are two lines in the ssd_mobilenet_v1_pets.config:
 fine_tune_checkpoint: "ssd_mobilenet_v1_coco_11_06_2017/model.ckpt"
 from_detection_checkpoint: true
 you can delete or disable these two lines to solve this problem. But it will make the training much slower.
+
+
+
+TRAIN (LEGACY)
+MODIFY .config FILE!!!
+python train.py --logtostderr --train_dir=training_process/ --pipeline_config_path=training_config/ssd_mobilenet_v1_coco_guitar.config
+python eval.py --logtostderr --pipeline_config_path=training_config/ssd_mobilenet_v1_coco_guitar.config --checkpoint_dir=training_process/04/ --eval_dir=eval/04/
+
+***  OR  ***
+
+
+
+
+
+
+
+
 ***********************************
 ***********************************
 
