@@ -38,7 +38,7 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 # # Setting model name
-# MODEL_NAME = 'ssd_mobilenet_v1_coco_2017_11_17'
+# MODEL_NAME = 'models_ZOO/ssd_mobilenet_v2_oid_v4_2018_12_12'
 # # MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
 # MODEL_FILE = MODEL_NAME + '.tar.gz'
 # DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
@@ -47,14 +47,14 @@ from utils import visualization_utils as vis_util
 # PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 #
 # # List of the strings that is used to add correct label for each box.
-# PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+# PATH_TO_LABELS = os.path.join('data', 'oid_v4_label_map.pbtxt')
 #
-# NUM_CLASSES = 90
+# NUM_CLASSES = 601
 #################################################################
 #################################################################
 #################################################################
 # What model to download.
-MODEL_NAME = 'custom_inference_graph/04/'
+MODEL_NAME = 'custom_inference_graph/900_OI/'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # List of the strings that is used to add correct label for each box.
@@ -169,10 +169,6 @@ for image_name in os.listdir(test_img_path):
 	# array-based representation of image will be used later to prepare result image with boxes and labels on it
 	image_np = load_image_into_numpy_array(image)
 
-	# if image_np.shape[2] != 3:
-	# 	print("Grayscale image, converting")
-	# 	image_np = np.broadcast_to(image_np, (image_np.shape[0], image_np.shape[1], 3)).copy()  # Duplicating the Content
-
 	# check if image is RGB or grayscale, and if grayscale convert to RGB
 	image_np = Check3D(image_np)
 
@@ -193,7 +189,7 @@ for image_name in os.listdir(test_img_path):
 
 	plt.figure(figsize=IMAGE_SIZE)
 	plt.imshow(image_np)
-	plt.imsave(f'./test_images_results/04/{image_name}', image_np)
+	plt.imsave(f'./test_images_results/900_oi/{image_name}', image_np)
 	plt.close()
 # #------------------------------#
 # #------------------------------#

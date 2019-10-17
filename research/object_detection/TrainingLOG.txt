@@ -1,69 +1,140 @@
-Test_00:
+Exp_00:
 	* images from matej (train/test: 43/5)
 	* high resolution. no bbox (whole image as bbox)
 	* PC -> doesn't even begin (completely stuck even before step1)
 	* colab -> crashes after 2 steps
 
 
-Test_00a:
+Exp_00a:
 	* 48 images (40/8)
 	* low resolution, no bbox
 	* incredibly fast training, loss<1 after a few steps!
 	* EVERYTHING IS A GUITAR!!! (99%)
 
 
-Test_01:
+Exp_01:
 	* 48 images (40/8)
 	* high resolution, bbox
 	* PC -> works, but REALLY SLOW (1st step took 87s)
 	* colab -> crashes after 2 steps AGAIN!!!
 
 
-Test_02:
-	REPEATING!!!!!!!!
+Exp_02:
 	* 48 images (40/8)
 	* low resolution, bboxes
-	* not really working, identifies random guitars
+	* exported: 5K
+	* identifies guitars in images from matej (too simple anyway)
+	* tested on images used in the next experiments, much worse results
+	* school of rock -> finds random guitars
 
 
 
 Downloaded 1000 images + bboxes from OpenImage
 
 
-Test_03:
-	* HAVE TO REPEAT IT AS WELL, THERE WAS NO VALIDATION!!!
-	* first 100 images as train, last 100 as test
-	* loss = 8291 steps/1.0543
-	* stil horrible
+ssd_mobilenet_v1_coco (ssd_mobilenet_v1_coco_2018_03_29)
 
 
-Test_04:
+Exp_200:
 	* first 200 images as train, last 100 as test
-	* 16k steps, loss = ??? (check)
-	* much better on video
+	* to decide when to export, I selected 2 point: max mAP, min ValidLoss (I was expecting them to be the same, but still...)
+
+  STOP CRITERIA  | STEPS  |  Train Loss  |  Valid Loss  |   mAP   |  images  |   school
+  ----------------------------------------------------------------------------------------
+  min ValidLoss  |   3431 |     1.821    |    9.387     |  0.1860 |          |
+      max mAP    |  12701 |     1.381    |    11.79     |  0.2924 |    ***   |
 
 
-**** slight over-fitting, modified model_main.py by adding
-		config = tf.estimator.RunConfig(model_dir=FLAGS.model_dir, keep_checkpoint_max=None)
-	so that it keeps all the checkpoints
 
 
 
-Test_05:
+
+There is a problem with the validation loss curve, trying:
+
+
+Exp_200_switch:
+	* try reverting original train and validation from exp_04:
+	* train on last 100, validation on first 200 (I created the labels and tfrecords, but it was useless...for training, simply switched paths in file .config)
+	* exported: 13.15K -> train/valid: 0.88/11.11
+	* images: meh
+	* video_school: better than 04, not great...???
+	* video_Vid2: not recognizing guitar in background
+
+
+
+Exp_300:
+	* first 300 images as train, last 100 as test
+	* same for exporting points
+
+  STOP CRITERIA  | STEPS  |  Train Loss  |  Valid Loss  |   mAP   |  images  |   school
+  ----------------------------------------------------------------------------------------
+  min ValidLoss  |   4375 |     2.117    |    8.168     |  0.2311 |          |
+      max mAP    |  23608 |     1.4851   |    9.940     |  0.3350 |          |
+
+
+
+
+
+
+
+
+Test_900:
+	* 900/100 images
+
+  STOP CRITERIA  | STEPS  |  Train Loss  |  Valid Loss  |   mAP   |  images  |   school
+  ----------------------------------------------------------------------------------------
+  min ValidLoss  |   2317 |     3.821    |   7.280      |  0.2517 |          |
+      max mAP    |  22802 |     1.864    |   8.798      |  0.3528 |          |
+
+
+
+
+
+
+
+*****************************
+***   CHANGING MODEL!!!   ***
+*****************************
+
+ssd_mobilenet_v2_coco (ssd_mobilenet_v2_coco_2018_03_29)
+
+Test_200_a: (REPEAT?)
+	* ssd_mobilenet_v2_coco (ssd_mobilenet_v2_coco_2018_03_29)
+	* using 200/100
+	* curve is much more normal!!!
+	* exported at 7124K steps -> 1.620/9.839 train/valid loss (valid loss still high!!!)
+	* images: meh
+	* video_school: better than 04, not great, false positives
+	* video_Vid2: not recognizing guitar in background
+
+
+Test_300_a: (REPEAT?)
+	* ssd_mobilenet_v2_coco (ssd_mobilenet_v2_coco_2018_03_29)
 	* first 300 images as train, last 100 as test
 
-   STEPS  |  Train Loss  |  Valid Loss
-  --------------------------------------
-    4375  |     2.1      |    8.2
-    7040  |     1.3      |    9.1
-     10K  |     1.8      |    9.0
-   12.4K  |     1.6      |    9.6
-   23.8K  |     1.2      |    9.8 
+
+Test_900_a:  (REPEATED, NO BIG DIFFERENCES)
+	* ssd_mobilenet_v2_coco (ssd_mobilenet_v2_coco_2018_03_29)
+	* using 900/100
 
 
 
-Test_06:
-	* 600 images
+
+Test_900_b:
+	* ssd_inception_v2_coco_2018_01_28 CHANGED MODEL!!!
+	* 900/100
+	* same?!
+
+
+
+
+Test_900_c:
+	* ssd_mobilenet_v2_coco (ssd_mobilenet_v2_coco_2018_03_29)
+	* using 900/100
+	* images normalized
+
+
+
 
 
 
