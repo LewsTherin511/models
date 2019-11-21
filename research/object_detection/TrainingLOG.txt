@@ -121,17 +121,102 @@ Test_900_a:  (REPEATED, NO BIG DIFFERENCES)
 
 
 Test_900_b:
-	* ssd_inception_v2_coco_2018_01_28 CHANGED MODEL!!!
+	* CHANGED MODEL!!! -> ssd_inception_v2_coco_2018_01_28
 	* 900/100
 	* same?!
 
 
 
+*******************************************************************************************************
+*******************************************************************************************************
+********************              IMPROVING FROM HERE!!!                      *************************
+*******************************************************************************************************
+*******************************************************************************************************
 
-Test_900_c:
-	* ssd_mobilenet_v2_coco (ssd_mobilenet_v2_coco_2018_03_29)
+
+Test_900_00 (c):
+	* ssd_mobilenet_v1_coco (ssd_mobilenet_v1_coco_2018_03_29)
 	* using 900/100
-	* images normalized
+	* learning rate = 0.0001 (instead of 0.004)
+	* fine_tune_checkpoint: "models_ZOO/ssd_mobilenet_v1_coco_2018_01_28/model.ckpt"  ---> TEST DIFFERENT WAYS TO CONFIGURE FINE-TUNING!!!
+		from_detection_checkpoint: true
+	* MUCH BETTER, DECREASE LEARNING RATE!!!
+
+
+
+Test_900_01 (d:
+	* ssd_inception_v2_coco_2018_01_28
+	* using 900/100
+	* slightly worse than 900_00
+
+
+Test_900_02 (e:
+	* ssd_mobilenet_v2_coco (ssd_mobilenet_v2_coco_2018_03_29)
+	* mobilenet_v1 (900_00) still better
+
+
+Test_900_03 (f:
+	* faster_rcnn_inception_v2_coco_2018_01_28
+	* LOSS IS INCREDIBLY LOWER, but too slow for real-time!!!
+	* still not getting the guitar in video_orig -> probably occluded, in test images it recognizes objects of similar size!!!
+
+
+
+
+TEST TWO THINGS NOW....
+1) augmentation option
+2) insert finer feature map to detect smaller objects
+
+
+Test_900_04 (g:
+	* ssd_mobilenet_v1_coco (ssd_mobilenet_v1_coco_2018_03_29)
+	* using "random_image_scale" augmentation option 	
+	* SAME!!!
+
+
+Test_900_05 (h:
+	* changed 'Conv2d_11_pointwise' -> Conv2d_5_pointwise in models/ssd_mobilenet_v1_feature_extractor.py
+	   (tried to add 'Conv2d_5_pointwise' at the beginning, but it doesn't go)
+
+
+
+Test_ins_01
+	* matej images (40/8)
+	* applied lots of augmentation options:
+		RandomHorizontalFlip random_horizontal_flip = 2;
+		RandomImageScale random_image_scale = 4;
+		RandomRGBtoGray random_rgb_to_gray = 5;
+		RandomAdjustBrightness random_adjust_brightness = 6;
+		RandomAdjustContrast random_adjust_contrast = 7;
+		RandomAdjustHue random_adjust_hue = 8;
+		RandomAdjustSaturation random_adjust_saturation = 9;
+		RandomDistortColor random_distort_color = 10;
+		RandomCropImage random_crop_image = 12;
+		RandomPadImage random_pad_image = 13;
+		RandomCropPadImage random_crop_pad_image = 14;
+		RandomCropToAspectRatio random_crop_to_aspect_ratio = 15;
+		RandomResizeMethod random_resize_method = 17;
+		ResizeImage resize_image = 19;
+		SSDRandomCrop ssd_random_crop = 21;
+		SSDRandomCropPad ssd_random_crop_pad = 22;
+		SSDRandomCropFixedAspectRatio ssd_random_crop_fixed_aspect_ratio = 23;
+	* SUCKS
+
+
+
+Test_900_06:
+	* same augmentation options as in ins_01 (could be too many of them!!!)
+	* same results as without augmentation (900_00)
+
+
+
+
+
+
+
+
+
+
 
 
 

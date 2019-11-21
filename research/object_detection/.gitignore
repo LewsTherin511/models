@@ -11,9 +11,11 @@ test_images_200_switch/*
 test_images_results
 test_images_results/*
 
-training_process
-training_process/*
+training_logs/
+training_logs/*
 
 video/
 video/*
+
+
 

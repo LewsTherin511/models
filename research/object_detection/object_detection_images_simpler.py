@@ -37,29 +37,29 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 #################################################################
-# # Setting model name
-# MODEL_NAME = 'models_ZOO/ssd_mobilenet_v2_oid_v4_2018_12_12'
-# # MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
-# MODEL_FILE = MODEL_NAME + '.tar.gz'
-# DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
-#
-# # Path to frozen detection graph. This is the actual model that is used for the object detection.
-# PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
-#
-# # List of the strings that is used to add correct label for each box.
-# PATH_TO_LABELS = os.path.join('data', 'oid_v4_label_map.pbtxt')
-#
-# NUM_CLASSES = 601
-#################################################################
-#################################################################
-#################################################################
-# What model to download.
-MODEL_NAME = 'custom_inference_graph/900_OI/'
+# Setting model name
+MODEL_NAME = 'models_ZOO/ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03'
+# MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
+MODEL_FILE = MODEL_NAME + '.tar.gz'
+DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
+
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('data', 'guitar_label_map.pbtxt')
-NUM_CLASSES = 1
+PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+
+NUM_CLASSES = 90
+#################################################################
+#################################################################
+#################################################################
+# # What model to download.
+# MODEL_NAME = 'custom_inference_graph/900_f/'
+# # Path to frozen detection graph. This is the actual model that is used for the object detection.
+# PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+# # List of the strings that is used to add correct label for each box.
+# PATH_TO_LABELS = os.path.join('data', 'guitar_label_map.pbtxt')
+# NUM_CLASSES = 1
 #################################################################
 #################################################################
 #################################################################
@@ -69,19 +69,19 @@ NUM_CLASSES = 1
 
 
 
-# # Download Model if needed, and extract
-# if not os.path.exists(MODEL_NAME + '/frozen_inference_graph.pb'):
-# 	print ('Downloading the model')
-# 	opener = urllib.request.URLopener()
-# 	opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
-# 	tar_file = tarfile.open(MODEL_FILE)
-# 	for file in tar_file.getmembers():
-# 		file_name = os.path.basename(file.name)
-# 		if 'frozen_inference_graph.pb' in file_name:
-# 			tar_file.extract(file, os.getcwd())
-# 	print ('Download complete')
-# else:
-# 	print ('Model already exists')
+# Download Model if needed, and extract
+if not os.path.exists(MODEL_NAME + '/frozen_inference_graph.pb'):
+	print ('Downloading the model')
+	opener = urllib.request.URLopener()
+	opener.retrieve(DOWNLOAD_BASE + MODEL_FILE, MODEL_FILE)
+	tar_file = tarfile.open(MODEL_FILE)
+	for file in tar_file.getmembers():
+		file_name = os.path.basename(file.name)
+		if 'frozen_inference_graph.pb' in file_name:
+			tar_file.extract(file, os.getcwd())
+	print ('Download complete')
+else:
+	print ('Model already exists')
 
 
 
@@ -152,16 +152,12 @@ def Check3D(image_np):
 	return image_np
 
 
-
 # #------------------------------#
 # #   Send IMAGES to detection   #
 # #------------------------------#
 # Size, in inches, of the output images.
 IMAGE_SIZE = (12, 8)
-test_img_path = "test_images/"
-
-# test_images_list = [image_name for image_name in os.listdir(test_img_path)]
-# num_test_images = len(test_images_list)
+test_img_path = "snapshots/"
 
 for image_name in os.listdir(test_img_path):
 	image_full_path = test_img_path + image_name
@@ -189,7 +185,7 @@ for image_name in os.listdir(test_img_path):
 
 	plt.figure(figsize=IMAGE_SIZE)
 	plt.imshow(image_np)
-	plt.imsave(f'./test_images_results/900_oi/{image_name}', image_np)
+	plt.imsave(f'./snapshots_results/{image_name}', image_np)
 	plt.close()
 # #------------------------------#
 # #------------------------------#
