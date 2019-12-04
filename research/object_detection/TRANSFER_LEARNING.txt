@@ -22,7 +22,7 @@ python model_main.py --pipeline_config_path=training_config/ssd_mobilenet_v1_coc
 
 
 EXPORT GRAPH
-python export_inference_graph.py --input_type image_tensor --pipeline_config_path training_config/ssd_mobilenet_v1_coco_guitar.config --trained_checkpoint_prefix training_process/04/model.ckpt-18948 --output_directory custom_inference_graph/04/
+python export_inference_graph.py --input_type image_tensor --pipeline_config_path training_config/ssd_mobilenet_v1_coco_guitar.config --trained_checkpoint_prefix training_logs/04/model.ckpt-18948 --output_directory custom_inference_graph/04/
 
 
 tensorboard --logdir=logs/visualize_graph --host localhost

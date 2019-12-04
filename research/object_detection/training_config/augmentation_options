@@ -1,0 +1,52 @@
+  data_augmentation_options {
+    random_rgb_to_gray {
+    }
+  }
+  data_augmentation_options {
+    random_adjust_brightness {
+    }
+  }
+  data_augmentation_options {
+    random_adjust_contrast {
+    }
+  }
+  data_augmentation_options {
+    random_adjust_hue {
+    }
+  }
+  data_augmentation_options {
+    random_adjust_saturation {
+    }
+  }
+  data_augmentation_options {
+    random_distort_color {
+    }
+  }
+  data_augmentation_options {
+    random_crop_image {
+    }
+  }
+  data_augmentation_options {
+    random_pad_image {
+    }
+  }
+  data_augmentation_options {
+    random_crop_pad_image {
+    }
+  }
+  data_augmentation_options {
+    random_crop_to_aspect_ratio {
+    }
+  }
+  data_augmentation_options {
+    ssd_random_crop {
+    }
+  }
+  data_augmentation_options {
+    ssd_random_crop_pad {
+    }
+  }
+  data_augmentation_options {
+    ssd_random_crop_fixed_aspect_ratio {
+    }
+  }

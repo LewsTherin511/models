@@ -37,29 +37,46 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 #################################################################
-# Setting model name
-MODEL_NAME = 'models_ZOO/ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03'
-# MODEL_NAME = 'faster_rcnn_inception_v2_coco_2018_01_28'
-MODEL_FILE = MODEL_NAME + '.tar.gz'
-DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
-
-# Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
-
-# List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
-
-NUM_CLASSES = 90
-#################################################################
-#################################################################
-#################################################################
-# # What model to download.
-# MODEL_NAME = 'custom_inference_graph/900_f/'
+# # Setting model name
+# ### COCO
+# # MODEL_NAME = 'models_ZOO/ssd_mobilenet_v1_coco_2018_01_28'
+# # MODEL_NAME = 'models_ZOO/ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03'
+# # MODEL_NAME = 'models_ZOO/faster_rcnn_resnet50_lowproposals_coco_2018_01_28'
+# # unbearably slow
+# # MODEL_NAME = 'models_ZOO/faster_rcnn_inception_resnet_v2_atrous_coco_2018_01_28'
+# # slow, but still ok
+# # MODEL_NAME = 'models_ZOO/faster_rcnn_inception_v2_coco_2018_01_28'
+# # MODEL_NAME = 'models_ZOO/faster_rcnn_resnet50_lowproposals_coco_2018_01_28'
+# 
+# ### OID4
+# # MODEL_NAME = 'models_ZOO/ssd_mobilenet_v2_oid_v4_2018_12_12'
+# MODEL_NAME = 'models_ZOO/faster_rcnn_inception_resnet_v2_atrous_oid_v4_2018_12_12'
+# 
+# 
+# 
+# MODEL_FILE = MODEL_NAME + '.tar.gz'
+# DOWNLOAD_BASE = 'http://download.tensorflow.org/models/object_detection/'
+# 
 # # Path to frozen detection graph. This is the actual model that is used for the object detection.
 # PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+# 
 # # List of the strings that is used to add correct label for each box.
-# PATH_TO_LABELS = os.path.join('data', 'guitar_label_map.pbtxt')
-# NUM_CLASSES = 1
+# # PATH_TO_LABELS = os.path.join('data', 'mscoco_label_map.pbtxt')
+# PATH_TO_LABELS = os.path.join('data', 'oid_v4_label_map.pbtxt')
+# 
+# 
+# # 601 classes for OiD, 90 for COCO
+# NUM_CLASSES = 601
+#################################################################
+#################################################################
+#################################################################
+# What model to download.
+MODEL_NAME = 'custom_inference_graph/900_08/'
+# Path to frozen detection graph. This is the actual model that is used for the object detection.
+PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+# List of the strings that is used to add correct label for each box.
+PATH_TO_LABELS = os.path.join('data', 'guitar_label_map.pbtxt')
+NUM_CLASSES = 1
 #################################################################
 #################################################################
 #################################################################
@@ -185,7 +202,7 @@ for image_name in os.listdir(test_img_path):
 
 	plt.figure(figsize=IMAGE_SIZE)
 	plt.imshow(image_np)
-	plt.imsave(f'./snapshots_results/{image_name}', image_np)
+	plt.imsave(f'./snapshots_results/900_08/{image_name}', image_np)
 	plt.close()
 # #------------------------------#
 # #------------------------------#

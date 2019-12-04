@@ -39,7 +39,7 @@ class SSDMobileNetV1FeatureExtractor(ssd_meta_arch.SSDFeatureExtractor):
                reuse_weights=None,
                use_explicit_padding=False,
                use_depthwise=False,
-               num_layers=6,
+               num_layers=7,
                override_base_feature_extractor_hyperparams=False):
     """MobileNetV1 Feature Extractor for SSD Models.
 
@@ -105,9 +105,9 @@ class SSDMobileNetV1FeatureExtractor(ssd_meta_arch.SSDFeatureExtractor):
         33, preprocessed_inputs)
 
     feature_map_layout = {
-        'from_layer': ['Conv2d_11_pointwise', 'Conv2d_13_pointwise', '', '',
+         'from_layer': ['Conv2d_5_pointwise', 'Conv2d_11_pointwise', 'Conv2d_13_pointwise', '', '',
                        '', ''][:self._num_layers],
-        'layer_depth': [-1, -1, 512, 256, 256, 128][:self._num_layers],
+        'layer_depth': [-1, -1, -1, 512, 256, 256, 128][:self._num_layers],
         'use_explicit_padding': self._use_explicit_padding,
         'use_depthwise': self._use_depthwise,
     }
