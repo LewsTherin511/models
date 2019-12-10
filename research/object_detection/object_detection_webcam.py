@@ -70,7 +70,7 @@ from utils import visualization_utils as vis_util
 #################################################################
 #################################################################
 # What model to download.
-MODEL_NAME = 'custom_inference_graph/900_08'
+MODEL_NAME = 'custom_inference_graph/900_11'
 # Path to frozen detection graph. This is the actual model that is used for the object detection.
 PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
 # List of the strings that is used to add correct label for each box.
@@ -124,7 +124,7 @@ category_index = label_map_util.create_category_index(categories)
 # intializing the web camera device
 # USE THIS FOR WEBCAM
 # cap = cv2.VideoCapture(0)
-cap = cv2.VideoCapture("video/school.mp4")
+cap = cv2.VideoCapture("video/video_01.mp4")
 
 
 count_frame = 0
@@ -134,7 +134,7 @@ with detection_graph.as_default():
 		ret = True
 		while (ret):
 			ret,image_np = cap.read()
-			if count_frame%20==0:
+			if count_frame%25==0:
 				# Expand dimensions since the model expects images to have shape: [1, None, None, 3]
 				image_np_expanded = np.expand_dims(image_np, axis=0)
 				image_tensor = detection_graph.get_tensor_by_name('image_tensor:0')

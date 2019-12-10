@@ -1,0 +1,7 @@
+input_images/*
+input_txts/*
+output_images_train/*
+output_images_test/*
+output_images_test_04b/
+output_images_test_04b/*
+output_labels/*

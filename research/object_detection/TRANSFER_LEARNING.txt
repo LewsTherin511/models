@@ -7,8 +7,8 @@ export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
 
 
 GENERATE RECORDS
-python generate_tfrecord.py --csv_input=data/train_labels.csv --output_path=data/train.record --image_dir=images/train
-python generate_tfrecord.py --csv_input=data/test_labels.csv --output_path=data/test.record --image_dir=images/test
+python generate_tfrecord.py --csv_input=[...]train_labels.csv --output_path=[...]train.record --image_dir=input_images_xml/train
+python generate_tfrecord.py --csv_input=[...]test_labels.csv --output_path=[...]test.record --image_dir=input_images_xml/test
 
 
 
